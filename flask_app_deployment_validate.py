@@ -10,14 +10,14 @@ from googleapiclient.errors import HttpError
 class Activity():
 
     # Testcase: Check Cloud Run Service Name
-    def testcase_check_cloud_run_service(self, test_object, credentials, project_id):
+    def testcase_check_cloud_run_service_name(self, test_object, credentials, project_id):
         testcase_description = "Verify flask-app Cloud Run service exists"
         expected_result = "flask-app"
         marks = 10
 
         try:
             is_present = False
-            actual = 'Run Service name is not ' + expected_result
+            actual = 'Cloud Run Service name is not ' + expected_result
 
             # Use Cloud Run API
             run_service = discovery.build('run', 'v1', credentials=credentials)
@@ -45,13 +45,13 @@ class Activity():
                 test_object.update_result(1, expected_result, actual,
                     "Congrats! You have done it right!", " ", marks)
             else:
-                return test_object.update_result(0, expected_result, actual,
+                test_object.update_result(0, expected_result, actual,
                     "Check Cloud Run Service name",
                     "https://cloud.google.com/run/docs/quickstarts/deploy-container", marks)
         except Exception as e:
             test_object.update_result(-1, expected_result, "Internal Server error",
                 "Please check with Admin", "", marks)
-            test_object.eval_message["testcase_check_cloud_run_service"] = str(e)
+            test_object.eval_message["testcase_check_cloud_run_service_name"] = str(e)
 
 def start_tests(credentials, project_id, args):
     if "result_output" not in sys.modules:
@@ -63,7 +63,7 @@ def start_tests(credentials, project_id, args):
     challenge_test = Activity()
 
     # Execute all testcases
-    challenge_test.testcase_check_cloud_run_service(test_object, credentials, project_id)
+    challenge_test.testcase_check_cloud_run_service_name(test_object, credentials, project_id)
 
     json.dumps(test_object.result_final(), indent=4)
     return test_object.result_final()
